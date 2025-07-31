@@ -1,0 +1,41 @@
+<div
+  class="d-flex justify-content-center align-items-center"
+  style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+  <div class="login-container">
+    <img [src]="logoPath" alt="Logo" class="logo" />
+    <h3>למען אמהות</h3>
+    <form (ngSubmit)="login()">
+      <div class="form-group">
+        <!-- <label for="username">שם משתמש:</label> -->
+        <input
+          matInput
+          type="text"
+          placeholder="👤  |  שם משתמש"
+          id="username"
+          [(ngModel)]="username"
+          name="username"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <!-- <label for="password">סיסמא:</label> -->
+        <input
+          matInput
+          type="password"
+          placeholder="🔒 |  סיסמא"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+      </div>
+      <button mat-button type="submit" class="btn btn-primary">כניסה</button>
+    </form>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+  </div>
+</div>
+<!-- <form (ngSubmit)="login()" #loginForm="ngForm">
+    <input type="text" name="username" [(ngModel)]="username" required>
+    <input type="password" name="password" [(ngModel)]="password" required>
+    <button type="submit">התחבר</button>
+  </form> -->

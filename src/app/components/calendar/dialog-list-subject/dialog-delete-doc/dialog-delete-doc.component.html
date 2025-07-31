@@ -1,0 +1,15 @@
+<div mat-dialog-title class="dialog-header">
+  <div>
+    {{ "מחיקה" }}
+  </div>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content style="padding: 10px">האם אתה בטוח שברצונך למחוק?</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">ביטול</button>
+  <button mat-button (click)="onConfirm()" cdkFocusInitial>אישור</button>
+</div>
+

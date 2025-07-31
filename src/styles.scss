@@ -1,0 +1,90 @@
+
+
+
+
+
+// Comment out the line below if you want to use the pre-defined typography utility classes.
+// For more information: https://material.angular.io/guide/typography#using-typography-styles-in-your-application.
+// @include mat.typography-hierarchy($calander-theme);
+
+// Comment out the line below if you want to use the deprecated `color` inputs.
+// @include mat.color-variants-backwards-compatibility($calander-theme);
+/* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+// @import "@angular/material/prebuilt-themes/indigo-pink.css";
+@import "@angular/material/prebuilt-themes/azure-blue.css";
+@import "../node_modules/material-design-icons/iconfont/material-icons.css";
+
+
+
+
+// ::ng-deep mat-mdc-dialog-actions{
+//     justify-content:flex-end !important
+//   }
+
+html,
+body {
+  // height: 100vh;
+  color: black !important;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: black;
+}
+
+::ng-deep .mat-button {
+  color: black !important;
+}
+
+// ::ng-deep .mat-dialog-actions {
+//   flex-wrap: nowrap;
+//   justify-content: flex-end !important;
+//   direction: ltr !important;
+// }
+
+::ng-deep .mat-mdc-dialog-title {
+  direction: rtl !important;
+}
+
+.button {
+  background-color: #e4b399b8 !important;
+  width: 50px;
+  margin: 5px;
+}
+
+.dialog-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-weight: bold !important;
+  font-size: 16px !important;
+  padding-right: 25px !important;
+  padding-left: 10px !important;
+  padding-top: 5px;
+}
+
+.dialog-header::before {
+  display: none !important;
+}
+
+
+::ng-deep .mat-mdc-raised-button:hover{
+
+background-color: #daa88c !important;
+}
+::ng-deep .mat-mdc-raised-button:not(:disabled){
+  background-color: #daa88c !important;
+
+}
+
+
+
+// .mat-mdc-raised-button:not(:disabled) :hover{
+
+//   background-color: rgba(216, 167, 139, 0.2588235294) !important;
+// }
+
+
+

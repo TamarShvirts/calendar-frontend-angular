@@ -1,0 +1,223 @@
+<button
+  mat-raised-button
+  mwlCalendarNextView
+  [view]="view"
+  [(viewDate)]="viewDate"
+  (viewDateChange)="changeWeek($event)"
+  class="button"
+>
+  <span class="Next">שבוע הבא</span>
+</button>
+
+<button
+  mat-raised-button
+  mwlCalendarToday
+  [(viewDate)]="viewDate"
+  (viewDateChange)="changeWeek($event)"
+  class="button"
+>
+  היום
+</button>
+
+<button
+  mat-raised-button
+  mwlCalendarPreviousView
+  [view]="view"
+  [(viewDate)]="viewDate"
+  (viewDateChange)="changeWeek($event)"
+  class="button"
+>
+  <span class="Previous">שבוע קודם</span>
+</button>
+
+<mat-form-field
+  class="datepicker"
+  appearance="outline"
+  style="width: 0; visibility: hidden"
+>
+  <input
+    matInput
+    [matDatepicker]="picker"
+    [matDatepickerFilter]="dateFilter"
+    [(ngModel)]="viewDate"
+    (dateChange)="jumpToDate($event)"
+    readonly
+  />
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+<button mat-button class="buttonToday" (click)="picker.open()">
+  <mat-icon style="right: 5px">date_range</mat-icon>
+</button>
+
+<mwl-calendar-week-view
+  [viewDate]="viewDate"
+  dir="rtl"
+  [excludeDays]="[6]"
+  [weekStartsOn]="0"
+  [hourSegments]="1"
+  [dayStartHour]="0"
+  [dayEndHour]="12"
+  [events]="events"
+  [hourSegmentTemplate]="weekView"
+  [currentTimeMarkerTemplate]="emptyTemplate"
+  (beforeViewRender)="beforeViewRender($event)"
+>
+</mwl-calendar-week-view>
+
+<ng-template #emptyTemplate>
+  <!-- תבנית ריקה -->
+</ng-template>
+
+<ng-template
+  #weekView
+  let-segment="segment"
+  let-locale="locale"
+  let-segmentHeight="segmentHeight"
+  let-isTimeLabel="isTimeLabel"
+>
+  <div
+    class="cal-hour-segment"
+    [style.height.px]="segmentHeight"
+    [ngStyle]="{
+      'height.px':  this.hourHeights[segment.date.getHours()]
+    }"
+  >
+    <div *ngIf="!isTimeLabel" class="cal-hour-segment">
+      <!-- <div *ngIf="segment.date.getHours() === 0"> -->
+        <!-- <input type="text" /> -->
+        <!-- <textarea style="height: 30px; width: 100; border: none"  name="" id=""></textarea>
+      </div> -->
+
+      <div *ngIf="segment.date.getHours() === 2" class="example-button-row">
+        <button
+          mat-icon-button
+          (click)="openDialog(segment, 'note_add')"
+          aria-label="Example icon-button with a heart icon"
+          matTooltip="הוספת קובץ"
+        >
+          <mat-icon>note_add</mat-icon>
+        </button>
+      </div>
+
+      <div *ngIf="segment.date.getHours() === 3">
+        <select name="" id="" style="width: 100%">
+          <option value="-1">מצב כתיבה</option>
+          <option value="0" style="background-color: green">כתוב</option>
+          <option value="1" style="background-color: red">לא כתוב</option>
+          <option value="2" style="background-color: orange">בכתיבה</option>
+        </select>
+      </div>
+
+      <div *ngIf="segment.date.getHours() === 4">
+        <select name="" id="" style="width: 100%">
+          <option value="-1">מצב קריון</option>
+          <option value="0" style="background-color: green">מקוריין</option>
+          <option value="1" style="background-color: red">לא מקוריין</option>
+          <option value="2" style="background-color: perple">בהקלטות</option>
+        </select>
+      </div>
+
+      <div *ngIf="segment.date.getHours() === 5">
+        <select name="" id="" style="width: 100%">
+          <option value="-1">מצב אולפן</option>
+          <option value="0" style="background-color: green">ערוך</option>
+          <option value="1" style="background-color: red">לא ערוך</option>
+          <option value="2" style="background-color: orange">בעבודה</option>
+        </select>
+      </div>
+      <div *ngIf="segment.date.getHours() === 6">
+        <select name="" id="" style="width: 100%">
+          <option value="-1">עורכת</option>
+          <option value="0" style="background-color: green">תמר</option>
+          <option value="1" style="background-color: green">אילה</option>
+          <option value="2" style="background-color: green">חני</option>
+        </select>
+      </div>
+
+      <div *ngIf="segment.date.getHours() === 7">
+        <select name="" id="" style="width: 100%">
+          <option value="-1">מכינה תוכנית</option>
+          <option value="0" style="background-color: green">כבי</option>
+          <option value="1" style="background-color: green">רחלי</option>
+          <option value="2" style="background-color: green">יהודית</option>
+          <option value="2" style="background-color: green">שולמית שחור</option>
+        </select>
+      </div>
+
+      <div *ngIf="segment.date.getHours() === 10">
+        <select name="" id="" style="width: 100%">
+          <option value="-1">מצב הקלטה</option>
+          <option value="0" style="background-color: green">הוקלט</option>
+          <option value="1" style="background-color: blue">
+            מאושר ולא הוקלט
+          </option>
+          <option value="2" style="background-color: red">לא סופי</option>
+        </select>
+      </div>
+
+      <div *ngIf="segment.date.getHours() === 11">
+        <select name="" id="" style="width: 100%">
+          <option value="-1">מצב אולפן</option>
+          <option value="0" style="background-color: green">ערוך</option>
+          <option value="1" style="background-color: red">עדיין לא ערוך</option>
+          <option value="2" style="background-color: orange">בעבודה</option>
+        </select>
+      </div>
+
+      <div *ngIf="segment.date.getHours() === 12">
+        <select name="" id="" style="width: 100%">
+          <option value="-1">עורכת</option>
+          <option value="0" style="background-color: green">חני</option>
+          <option value="1" style="background-color: green">אילה</option>
+          <option value="2" style="background-color: green">תמר</option>
+        </select>
+      </div>
+
+      <!-- <button mat-raised-button (click)="openDialog(segment)"  type="submit"> -->
+      <!-- <span>
+       
+        <div class="example-button-row">
+          <button
+            mat-icon-button
+            (click)="openDialog(segment, 'note_add')"
+            aria-label="Example icon-button with a heart icon"
+            matTooltip="הוספת קובץ"
+          >
+            <mat-icon>note_add</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            (click)="openDialog(segment, 'description')"
+            aria-label="Example icon-button with a heart icon"
+            matTooltip="רשימת הקבצים"
+          >
+            <mat-icon>description</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            (click)="openDialog(segment, 'comments')"
+            aria-label="Example icon-button with a heart icon"
+            matTooltip="הערות"
+          >
+            <mat-icon style="overflow: visible">message</mat-icon>
+          </button>
+        </div>
+      </span> -->
+      <!-- <button (click)="loadCountDoc(segment)">נותרו {{initialState.unedited}} קבצים לא ערוכים</button> -->
+      <!-- <span>נותרו {{num}} קבצים שלא עברו ביקורת</span> -->
+      <!-- <div>
+        מספר מסמכים ללא עריכה וללא אישור: {{ segment.dataCount.falseEditAndConfirmedCount }}
+        מספר מסמכים ללא עריכה: {{ segment.dataCount.falseEditOnlyCount }}
+        מספר מסמכים ללא אישור: {{ segment.dataCount.falseConfirmedOnlyCount }}
+      </div> -->
+    </div>
+
+    <div *ngIf="isTimeLabel" class="cal-time">
+      <p>{{ header[segment.date.getHours()] }}</p>
+    </div>
+  </div>
+</ng-template>

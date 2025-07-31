@@ -1,0 +1,42 @@
+<div mat-dialog-title class="dialog-header">
+  <div>
+    {{ "קובץ חדש" }}
+  </div>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content class="wrapper-new-file">
+  <button
+    type="button"
+    style="margin-right: 20px"
+    mat-raised-button
+    (click)="fileInput.click()"
+  >
+    בחר קובץ
+  </button>
+  <input hidden (change)="onFileChange($event)" #fileInput type="file" />
+  <br />
+  <br />
+  <!-- <span class="file-name">{{selectedFile?.name}}</span> -->
+  <a
+    [href]="this.previewUrl"
+    *ngIf="previewUrl"
+    target="_blank"
+    style="margin-right: 30px; color:#daa88c">{{ selectedFile?.name }}</a>
+
+  <div *ngIf="previewUrl" class="preview-options">
+    <mat-checkbox [(ngModel)]="edited">ערוך</mat-checkbox>
+    <mat-checkbox [(ngModel)]="Confirmed">עבר ביקורת</mat-checkbox>
+  </div>
+
+  <!-- <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview" style="max-width: 200px;"> -->
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button class="button" (click)="onCancel()">ביטול</button>
+  <button mat-button class="button" cdkFocusInitial (click)="onNoClick()">
+    אישור
+  </button>
+</div>

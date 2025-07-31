@@ -1,0 +1,45 @@
+mwl-calendar-week-view {
+    background-color: lightblue;
+  }
+  
+  // Styling the day cell within the month view
+  mwl-calendar-week-view .cal-day-cell {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  
+  // Changing the font size of the day number within the day cell
+  mwl-calendar-week-view .cal-day-cell .cal-day-number {
+    font-size: 16px;
+  }
+  
+  // Customizing the header containing the month and year
+  mwl-calendar-week-view .cal-header {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+  }
+  
+  /* Add basic styles for the calendar component */
+  :host {
+    display: block;
+    font-family: Arial, sans-serif;
+  }
+  
+  // /* header.component.scss */
+  // .header {
+  //   display: flex;
+  //   align-items: center;
+  //   padding: 1rem;
+  //   background-color: #ffffff;  /* או כל צבע שתרצה */
+  //   box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* צל עדין */
+  // }
+  
+  
+
+
+    
+  
+  

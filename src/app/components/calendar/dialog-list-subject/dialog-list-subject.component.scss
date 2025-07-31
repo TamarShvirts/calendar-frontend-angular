@@ -1,0 +1,41 @@
+
+
+.gray-bg {
+  color: gray; 
+}
+
+.green-bg {
+  color: #daa88c; 
+}
+
+::ng-deep mat-dialog-container {
+  direction: rtl;
+}
+
+table {
+  text-align: center;
+
+  td,
+  th {
+    padding: 10px;
+  }
+}
+.green {
+  color: green;
+
+}
+
+.red {
+  color: red; 
+}
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+
+
+

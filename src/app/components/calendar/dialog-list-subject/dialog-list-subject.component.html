@@ -1,0 +1,71 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=download" />
+
+<div mat-dialog-title class="dialog-header">
+  <div>
+    {{ "רשימת הקבצים" }}
+  </div>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+  <div *ngIf="!docs.length; else elseBlock">לא נמצאו קבצים</div>
+
+  <ng-template #elseBlock>
+    <table style="border-collapse: collapse; width: 100%">
+      <thead>
+        <tr style="background-color: #f2f2f2">
+          <th>שם הקובץ</th>
+          <th>ערוך</th>
+          <th>עבר ביקורת</th>
+          <th>עריכה</th>
+          <th>מחיקה</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doc of docs; let i = index">
+          <td style="text-align: right;"[ngClass]="{ 'gray-bg': i % 2 === 0, 'green-bg': i % 2 !== 0 }">    
+            <button  mat-icon-button (click)="downloadDocument(doc)" style="background: none; border: none; cursor: pointer">
+            <mat-icon >arrow_downward</mat-icon></button>
+            <span style="text-align: center !important;">{{ doc.docName }}</span>
+          </td>
+          <td>
+            <!-- <a
+            [href]="this.previewUrl"
+            *ngIf="previewUrl"
+            target="_blank"
+            style="margin-right: 30px; color:#daa88c">{{ selectedFile?.name }}</a> -->
+        
+            <span style="font-weight: bolder;" class="{{ doc.docEdit ? 'green' : 'red' }}">{{ doc.docEdit ? "✓" : "✗" }}</span>
+          </td>
+          <td>
+            <span style="font-weight: bold;" class="{{ doc.docConfirmed ? 'green' : 'red' }}">{{ doc.docConfirmed ? "✓" : "✗" }}</span>
+          </td>
+          <td>
+            <button mat-icon-button style="background: none; border: none; cursor: pointer"
+              (click)="openEditDialog(doc.docEdit, doc.docConfirmed, doc.docId)">
+              <mat-icon >edit</mat-icon>
+              <!-- ✏️ -->
+            </button>
+          </td>
+          <td>
+            <button mat-icon-button
+              style="background: none; border: none; cursor: pointer"
+              (click)="openDeleteDialog(doc.docId)">
+              <!-- 🗑️   -->
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button class="button" (click)="onCancel()">ביטול</button>
+  <button mat-button class="button" cdkFocusInitial (click)="onNoClick()">
+    אישור
+  </button>
+</mat-dialog-actions>

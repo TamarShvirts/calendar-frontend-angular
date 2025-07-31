@@ -1,0 +1,28 @@
+.file-name {
+  margin-left: 1rem; /* or whatever margin you require */
+}
+.wrapper-new-file {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 40vh;
+}
+::ng-deep mat-dialog-container {
+  direction: rtl;
+}
+
+
+
+// ::ng-deep .mdc-checkbox__native-control:focus:focus:checked~.mdc-checkbox__background {
+
+//   background-color: #daa88c !important;
+//   border-color: #daa88c !important;
+
+// }
+
+// ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background, .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background{
+//   background-color: #daa88c !important;
+//   border-color: #daa88c !important; 
+// }
+

@@ -1,0 +1,13 @@
+<app-subject-week
+    [firstDayOfWeek]="firstDayOfWeek"
+    [lastDayOfWeek]="lastDayOfWeek"
+    [SubName]="SubName"
+    [myCondition]="myCondition"
+  ></app-subject-week>
+
+
+  <app-calendar
+    (weekDatesChange)="onWeekDatesChange($event)"
+    (SubNameParent)="onsubNameChange($event)"
+    (myCondition)="onmyConditionChange($event)"
+  ></app-calendar>

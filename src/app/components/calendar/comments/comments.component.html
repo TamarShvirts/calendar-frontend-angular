@@ -1,0 +1,54 @@
+<!-- <div mat-dialog-title class="dialog-header">
+    <div>
+      {{ "הערות" }}
+    </div>
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-actions>
+    <button mat-button class="button" (click)="onCancel()">ביטול</button>
+    <button mat-button class="button" cdkFocusInitial (click)="onNoClick()">
+      אישור
+    </button>
+  </mat-dialog-actions> -->
+
+<div mat-dialog-title class="dialog-header">
+  <div>
+    {{ "הערות" }}
+  </div>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="comments-container">
+  <div *ngFor="let comment of comments" class="comment">
+    <button mat-icon-button (click)="commentDel(comment.commentId)" class="delete">
+      <mat-icon style="font-size: 23px !important;">delete</mat-icon>
+    </button>
+    <div class="comment-text">{{ comment.comments }}</div>
+    <div class="comment-timestamp">
+      {{ comment.commentDate | date : "short" }}
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <form (ngSubmit)="addComment()" class="comment-form">
+    <mat-form-field class="comment-input">
+      <textarea
+        matInput
+        #commentInput
+        [(ngModel)]="newComment"
+        name="newComment"
+        placeholder="הקלד הערה..."
+        (keydown)="onKeyDown($event)"
+        ></textarea>
+    </mat-form-field>
+      
+    <button mat-raised-button color="primary" type="submit" class="send-button">
+      שלח
+    </button>
+  </form>
+</mat-dialog-actions>
