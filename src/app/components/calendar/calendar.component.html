@@ -48,7 +48,7 @@
 </mat-form-field>
 
 <button mat-button class="buttonToday" (click)="picker.open()">
-  <mat-icon>date_range</mat-icon>
+  <mat-icon style="right: 5px">date_range</mat-icon>
 </button>
 
 <mwl-calendar-week-view
@@ -58,7 +58,7 @@
   [weekStartsOn]="0"
   [hourSegments]="1"
   [dayStartHour]="0"
-  [dayEndHour]="12"
+  [dayEndHour]="4"
   [events]="events"
   [hourSegmentTemplate]="weekView"
   [currentTimeMarkerTemplate]="emptyTemplate"
@@ -90,7 +90,7 @@
         <!-- <textarea style="height: 30px; width: 100; border: none"  name="" id=""></textarea>
       </div> -->
 
-      <div *ngIf="segment.date.getHours() === 2" class="example-button-row">
+      <!-- <div *ngIf="segment.date.getHours() === 2" class="example-button-row">
         <button
           mat-icon-button
           (click)="openDialog(segment, 'note_add')"
@@ -99,44 +99,44 @@
         >
           <mat-icon>note_add</mat-icon>
         </button>
-      </div>
+      </div> -->
 
-      <div *ngIf="segment.date.getHours() === 3">
+      <!-- <div *ngIf="segment.date.getHours() === 3">
         <select name="" id="" style="width: 100%">
           <option value="-1">מצב כתיבה</option>
           <option value="0" style="background-color: green">כתוב</option>
           <option value="1" style="background-color: red">לא כתוב</option>
           <option value="2" style="background-color: orange">בכתיבה</option>
         </select>
-      </div>
+      </div> -->
 
-      <div *ngIf="segment.date.getHours() === 4">
+      <!-- <div *ngIf="segment.date.getHours() === 4">
         <select name="" id="" style="width: 100%">
           <option value="-1">מצב קריון</option>
           <option value="0" style="background-color: green">מקוריין</option>
           <option value="1" style="background-color: red">לא מקוריין</option>
           <option value="2" style="background-color: perple">בהקלטות</option>
         </select>
-      </div>
+      </div> -->
 
-      <div *ngIf="segment.date.getHours() === 5">
+      <!-- <div *ngIf="segment.date.getHours() === 5">
         <select name="" id="" style="width: 100%">
           <option value="-1">מצב אולפן</option>
           <option value="0" style="background-color: green">ערוך</option>
           <option value="1" style="background-color: red">לא ערוך</option>
           <option value="2" style="background-color: orange">בעבודה</option>
         </select>
-      </div>
-      <div *ngIf="segment.date.getHours() === 6">
+      </div> -->
+      <!-- <div *ngIf="segment.date.getHours() === 6">
         <select name="" id="" style="width: 100%">
           <option value="-1">עורכת</option>
           <option value="0" style="background-color: green">תמר</option>
           <option value="1" style="background-color: green">אילה</option>
           <option value="2" style="background-color: green">חני</option>
         </select>
-      </div>
+      </div> -->
 
-      <div *ngIf="segment.date.getHours() === 7">
+      <!-- <div *ngIf="segment.date.getHours() === 7">
         <select name="" id="" style="width: 100%">
           <option value="-1">מכינה תוכנית</option>
           <option value="0" style="background-color: green">כבי</option>
@@ -144,9 +144,9 @@
           <option value="2" style="background-color: green">יהודית</option>
           <option value="2" style="background-color: green">שולמית שחור</option>
         </select>
-      </div>
+      </div> -->
 
-      <div *ngIf="segment.date.getHours() === 10">
+      <!-- <div *ngIf="segment.date.getHours() === 10">
         <select name="" id="" style="width: 100%">
           <option value="-1">מצב הקלטה</option>
           <option value="0" style="background-color: green">הוקלט</option>
@@ -155,28 +155,28 @@
           </option>
           <option value="2" style="background-color: red">לא סופי</option>
         </select>
-      </div>
+      </div> -->
 
-      <div *ngIf="segment.date.getHours() === 11">
+      <!-- <div *ngIf="segment.date.getHours() === 11">
         <select name="" id="" style="width: 100%">
           <option value="-1">מצב אולפן</option>
           <option value="0" style="background-color: green">ערוך</option>
           <option value="1" style="background-color: red">עדיין לא ערוך</option>
           <option value="2" style="background-color: orange">בעבודה</option>
         </select>
-      </div>
+      </div> -->
 
-      <div *ngIf="segment.date.getHours() === 12">
+      <!-- <div *ngIf="segment.date.getHours() === 12">
         <select name="" id="" style="width: 100%">
           <option value="-1">עורכת</option>
           <option value="0" style="background-color: green">חני</option>
           <option value="1" style="background-color: green">אילה</option>
           <option value="2" style="background-color: green">תמר</option>
         </select>
-      </div>
+      </div> -->
 
       <!-- <button mat-raised-button (click)="openDialog(segment)"  type="submit"> -->
-      <!-- <span>
+       <span>
        
         <div class="example-button-row">
           <button
@@ -206,7 +206,7 @@
             <mat-icon style="overflow: visible">message</mat-icon>
           </button>
         </div>
-      </span> -->
+      </span>
       <!-- <button (click)="loadCountDoc(segment)">נותרו {{initialState.unedited}} קבצים לא ערוכים</button> -->
       <!-- <span>נותרו {{num}} קבצים שלא עברו ביקורת</span> -->
       <!-- <div>
