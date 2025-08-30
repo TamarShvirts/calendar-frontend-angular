@@ -47,51 +47,225 @@ type HourHeights = {
   encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent implements OnInit {
-  header: any = [
-    'נושא יומי',
-    '1',
-    '2',
-    'מצבכתיבה',
-    'מצבקריון',
-    'מצבאולפן',
-    'עורכת',
-    'מכינהתוכנית',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12'
+  dailySubjects: { [dateKey: string]: string } = {}; // אחסון נושאים לפי תאריך
+  inspirationalpieces: { [dateKey: string]: string } = {}; // אחסון קטעי השראה לפי תאריך
+  panels: { [dateKey: string]: string } = {}; // אחסון פאנלים/הרצאות לפי תאריך
+  notes: { [dateKey: string]: string } = {}; // אחסון פאנלים/הרצאות לפי תאריך
+
+  header: string[] = [
+    // שורה 0 - שעה 00:00 (כותרת ראשית)
+    'נושא יומי',            // שורה 1 - שעה 01:00 (נושא יומי)  
+    '', '',     // שורה 2 - שעה 02:00 (כותרת בקרות)
+    'מצב כתיבה',           // שורה 3 - שעה 03:00 (סטטוס כתיבה)
+    'מצב קריון',           // שורה 4 - שעה 04:00 (סטטוס קריון)  
+    'מצב אולפן',           // שורה 5 - שעה 05:00 (סטטוס אולפן)
+    'עורכת',              // שורה 6 - שעה 06:00 (איזו עורכת)
+    'מכינה תוכנית',        // שורה 7 - שעה 07:00 (מי מכין)
+    '',                    // שורה 8 - שעה 08:00 (ריק)
+    '',                    // שורה 9 - שעה 09:00 (ריק)
+    'מצב הקלטה',           // שורה 10 - שעה 10:00 (סטטוס הקלטה)
+    'מצב אולפן',           // שורה 11 - שעה 11:00 (סטטוס אולפן שוב) 
+    'עורכת'               // שורה 12 - שעה 12:00 (עורכת שוב)
   ];
 
-    // // מערך שמגדיר את הגובה לכל שעה
-    // hourHeights: { [hour: number]: number } = {
-    //   0: 100, // שעה 00:00 בגובה 100px
-    //   1: 200,  // שעה 01:00 בגובה 50px
-    //   2: 100, // שעה 02:00 בגובה 100px
-    //   3: 75   // שעה 03:00 בגובה 75px
-    // };
+  // מבני נתונים לאפשרויות הDropdowns
 
-    hourHeights : HourHeights = {
-      0: 50,  // שעה 00:00
-      1: 50,   // שעה 01:00
-      2: 50,   // שעה 02:00
-      3: 50,
-      4: 50,
-      5: 50,
-      6: 50,
-      7: 50,
-      8: 50,
-      9: 50,
-      10: 50,
-      11: 50,
-      12: 50   // שעה 03:00
-    }
+  writingStatusByHour: Record<string, number> = {};
+  narratorStatusByHour: Record<string, number> = {};
+  studioStatusByHour: Record<string, number> = {};
+  editorsByHour: Record<string, number> = {};
+  ProgramPreparerByHour: Record<string, number> = {};
+  RecordingStatusByHour: Record<string, number> = {};
+
+
+  // אפשרויות הסטטוסים לדרופדאון
+  writingStatusOptions = [
+    { value: -1, label: 'מצב כתיבה', color: '#f0f0f0' },
+    { value: 0, label: 'כתוב', color: '#4caf50' },
+    { value: 1, label: 'לא כתוב', color: '#f44336' },
+    { value: 2, label: 'בכתיבה', color: '#ff9800' }
+  ];
+
+  narratorStatusOptions = [
+    { value: -1, label: 'מצב קריון', color: '#f0f0f0' },
+    { value: 0, label: 'מקוריין', color: '#4caf50' },
+    { value: 1, label: 'לא מקוריין', color: '#f44336' },
+    { value: 2, label: 'בהקלטות', color: '#9c27b0' }
+  ];
+
+  studioStatusOptions = [
+    { value: -1, label: 'מצב אולפן', color: '#f0f0f0' },
+    { value: 0, label: 'ערוך', color: '#4caf50' },
+    { value: 1, label: 'לא ערוך', color: '#f44336' },
+    { value: 2, label: 'בעבודה', color: '#ff9800' }
+  ];
+
+  editorsOptions = [
+    { value: -1, label: 'עורכת', color: '#f0f0f0' },
+    { value: 0, label: 'תמר', color: '#4caf50' },
+    { value: 1, label: 'אילה', color: '#4caf50' },
+    { value: 2, label: 'חני', color: '#4caf50' }
+  ];
+
+  programPreparersOptions = [
+    { value: -1, label: 'מכינה תוכנית', color: '#f0f0f0' },
+    { value: 0, label: 'כבי', color: '#4caf50' },
+    { value: 1, label: 'רחלי', color: '#4caf50' },
+    { value: 2, label: 'יהודית', color: '#4caf50' },
+    { value: 3, label: 'שולמית שחור', color: '#4caf50' }
+  ];
+
+  recordingStatusOptions = [
+    { value: -1, label: 'מצב הקלטה', color: '#f0f0f0' },
+    { value: 0, label: 'הוקלט', color: '#4caf50' },
+    { value: 1, label: 'מאושר ולא הוקלט', color: '#2196f3' },
+    { value: 2, label: 'לא סופי', color: '#f44336' }
+  ];
+
+
+  // מערך שמגדיר את הגובה לכל שעה
+  hourHeights: HourHeights = {
+    0: 20,  // שעה 00:00 - נושא יומי (נמוך יותר)
+    1: 50,   // שעה 01:00
+    2: 50,   // שעה 02:00
+    3: 50,
+    4: 50,
+    5: 50,
+    6: 50,
+    7: 50,
+    8: 50,
+    9: 50,
+    10: 50,
+    11: 50,
+    12: 50   // שעה 03:00
+  }
 
   constructor(
     private dialog: MatDialog,
     private apiService: ApiService,
     private docmentService: DocumentService
-  ) {}
+  ) { }
+
+  // פונקציה עזר לקבלת כותרת בטוחה
+  getHeaderForHour(hour: number): string {
+    return this.header[hour] || '';
+  }
+
+  // פונקציה עזר לקבלת מפתח תאריך
+  private getDateKey(date: Date): string {
+    return date.toISOString().split('T')[0]; // יחזיר תאריך בפורמט YYYY-MM-DD
+  }
+
+  // פונקציות לניהול נושאים יומיים
+  getDailySubjectForDate(date: Date): string {
+    const dateKey = this.getDateKey(date);
+    return this.dailySubjects[dateKey] || '';
+  }
+
+
+  // פונקציות לניהול שינויים בדרופדאונים
+  onDailySubjectChange(date: Date, value: string) {
+    const dateKey = this.getDateKey(date);
+    this.dailySubjects[dateKey] = value;
+    console.log(`שינוי נושא יומי לתאריך ${dateKey}:`, value);
+    // כאן תוכלי להוסיף לוגיקה לשמירת הנושא היומי
+
+  }
+  // פונקציות לניהול קטעי השראה
+  getInspirationalpiecesForDate(date: Date): string {
+    const dateKey = this.getDateKey(date);
+    return this.inspirationalpieces[dateKey] || '';
+  }
+
+  // פונקציה לניהול שינויים בקטעי השראה
+  onInspirationalpiecesChange(date: Date, value: string) {
+    const dateKey = this.getDateKey(date);
+    this.inspirationalpieces[dateKey] = value;
+    console.log(`שינוי הערות קטעי השראה לתאריך ${dateKey}:`, value);
+    // כאן תוכלי להוסיף לוגיקה לשמירת הנושא היומי
+  }
+
+  // פונקציות לניהול פאנלים/הרצאות
+  getpanelstsForDate(date: Date): string {
+    const dateKey = this.getDateKey(date);
+    return this.panels[dateKey] || '';
+  }
+
+  // פונקציה לניהול שינויים בפאנלים/הרצאות
+  onpanelsChange(date: Date, value: string) {
+    const dateKey = this.getDateKey(date);
+    this.panels[dateKey] = value;
+  }
+
+  // פונקציות לניהול הערות
+  getNotesForDate(date: Date): string {
+    const dateKey = this.getDateKey(date);
+    return this.notes[dateKey] || '';
+  }
+  // פונקציה לניהול שינויים בהערות
+  onNotesChange(date: Date, value: string) {
+    const dateKey = this.getDateKey(date);
+    this.notes[dateKey] = value;
+  }
+
+  // פונקציה לקבלת צבע נבחר לפי סטטוס כתיבה
+  getSelectedColor(date: Date, hour: number): string {
+    // יצירת מפה של כל הסטטוסים לפי שעה בזמן ריצה
+    const statusMaps: { [key: number]: { data: Record<string, number>, options: any[] } } = {
+      3: { data: this.writingStatusByHour, options: this.writingStatusOptions },
+      4: { data: this.narratorStatusByHour, options: this.narratorStatusOptions },
+      5: { data: this.studioStatusByHour, options: this.studioStatusOptions },
+      6: { data: this.editorsByHour, options: this.editorsOptions },
+      7: { data: this.ProgramPreparerByHour, options: this.programPreparersOptions },
+      10: { data: this.RecordingStatusByHour, options: this.recordingStatusOptions },
+      // 11: { data: this.studioStatusByHour, options: this.studioStatusOptions },
+      // 12: { data: this.editorsByHour, options: this.editorsOptions },
+    };
+
+    const statusMap = statusMaps[hour];
+    if (!statusMap) return 'transparent';
+
+    const value = statusMap.data[date.toDateString()] ?? -1;
+    const selected = statusMap.options.find((opt: any) => opt.value === value);
+    return selected ? selected.color : 'transparent';
+  }
+
+
+  // onWritingStatusChange(date: Date, value: number) {
+  //   this.writingStatusByHour[date.toDateString()] = value;
+  //   console.log(`שינוי סטטוס כתיבה ליום ${date.toDateString()}:`, value);
+  // }
+
+  onWritingStatusChange(hour: number, value: string) {
+    console.log(`שינוי סטטוס כתיבה לשעה ${hour}:`, value);
+    // כאן תוכלי להוסיף לוגיקה לשמירת השינוי
+  }
+
+  onNarratorStatusChange(hour: number, value: string) {
+    console.log(`שינוי סטטוס קריין לשעה ${hour}:`, value);
+    // כאן תוכלי להוסיף לוגיקה לשמירת השינוי
+  }
+
+  onStudioStatusChange(hour: number, value: string) {
+    console.log(`שינוי סטטוס אולפן לשעה ${hour}:`, value);
+    // כאן תוכלי להוסיף לוגיקה לשמירת השינוי
+  }
+
+  onEditorChange(hour: number, value: string) {
+    console.log(`שינוי עורך לשעה ${hour}:`, value);
+    // כאן תוכלי להוסיף לוגיקה לשמירת השינוי
+  }
+
+  onProgramPreparerChange(hour: number, value: string) {
+    console.log(`שינוי מכין תוכנית לשעה ${hour}:`, value);
+    // כאן תוכלי להוסיף לוגיקה לשמירת השינוי
+  }
+
+  onRecordingStatusChange(hour: number, value: string) {
+    console.log(`שינוי סטטוס הקלטה לשעה ${hour}:`, value);
+    // כאן תוכלי להוסיף לוגיקה לשמירת השינוי
+  }
+
 
   view: CalendarView = CalendarView.Week;
 
@@ -121,19 +295,41 @@ export class CalendarComponent implements OnInit {
     this.changeWeek(this.viewDate);
   }
 
+  headers: { hour: number; title: string }[] = [
+    { hour: 1, title: 'קטעי השראה' },
+    { hour: 8, title: 'הרצאות / פאנלים / תוכניות' },
+    { hour: 13, title: 'הערות' },
+
+  ];
+
   beforeViewRender(event: CalendarWeekViewBeforeRenderEvent): void {
-  //   event.hourColumns.forEach(hourColumn => {
-  //     hourColumn.hours.forEach(hour => {
-  //       const hourNumber = new Date(hour.segments[0].date).getHours();
-        
-  //       // החלת הגובה המותאם לכל שעה
-  //       if (this.hourHeights[hourNumber]) {
-  //         hour.segments.forEach(segment => {
-  //           segment.cssClass = `custom-height-${hourNumber}`;
-  //         });
-  //       }
-  //     });
-  //   });
+      // event.hourColumns.forEach(hourColumn => {
+      //   hourColumn.hours.forEach(hour => {
+      //     const hourNumber = new Date(hour.segments[0].date).getHours();
+
+      //     // החלת הגובה המותאם לכל שעה
+      //     if (this.hourHeights[hourNumber]) {
+      //       hour.segments.forEach(segment => {
+      //         segment.cssClass = `custom-height-${hourNumber}`;
+      //       });
+      //     }
+      //   });
+      // });
+
+
+    event.hourColumns.forEach((col) => {
+      col.hours.forEach((hour) => {
+        const header = this.headers.find(
+          h => h.hour === hour.segments[0].date.getHours()
+        );
+        if (header) {
+          hour.segments.forEach(segment => {
+            (segment as any).isHeaderRow = true;
+            (segment as any).headerTitle = header.title;
+          });
+        }
+      });
+    });
   }
 
 
@@ -194,32 +390,32 @@ export class CalendarComponent implements OnInit {
   }
 
   // beforeViewRender(event: CalendarWeekViewBeforeRenderEvent) {
-    // console.log(event.hourColumns, "event.minuteColumn")
-    // event.hourColumns.forEach((d) =>
-    //   d.hours.forEach((dr) => {
-    //     this.docmentService
-    //       .getCuontStatusDocByDate(dr.segments[0].date)
-    //       .subscribe(
-    //         (response) => {
-    //           console.log(dr.segments[0].date,response, '+++++');
-    //           const status = response;
-    //           (dr.segments[0] as any).dataCount = status;
-    //           console.log((dr.segments[0] as any).dataCount,"GGGG");
-              
-    //         },
-    //         (error) => {
-    //           console.log('Error:', error);
-    //         }
-    //       );
-    //   })
-    // );
-    // console.log(event.hourColumns,"456");
-    
-    // event.hourColumns.forEach(d=>d.hours.forEach(b=>console.log(b.segments[0],"369852")))
-    
+  // console.log(event.hourColumns, "event.minuteColumn")
+  // event.hourColumns.forEach((d) =>
+  //   d.hours.forEach((dr) => {
+  //     this.docmentService
+  //       .getCuontStatusDocByDate(dr.segments[0].date)
+  //       .subscribe(
+  //         (response) => {
+  //           console.log(dr.segments[0].date,response, '+++++');
+  //           const status = response;
+  //           (dr.segments[0] as any).dataCount = status;
+  //           console.log((dr.segments[0] as any).dataCount,"GGGG");
 
-    // this.startDate = event.period.start;
-    // this.endDate = event.period.end;
+  //         },
+  //         (error) => {
+  //           console.log('Error:', error);
+  //         }
+  //       );
+  //   })
+  // );
+  // console.log(event.hourColumns,"456");
+
+  // event.hourColumns.forEach(d=>d.hours.forEach(b=>console.log(b.segments[0],"369852")))
+
+
+  // this.startDate = event.period.start;
+  // this.endDate = event.period.end;
   // }
 
   changeWeek(s: any) {

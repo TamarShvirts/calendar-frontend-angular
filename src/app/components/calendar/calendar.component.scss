@@ -2,6 +2,212 @@
 //     display: none !important;
 // }
 
+// כותרת בתוך הטבלה בשעה 8
+.header-segment {
+  background-color:#e4b399b8 !important;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: none !important;
+}
+
+.header-cell {
+  width: 100%;
+  padding: 8px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  border: none !important;
+}
+
+// כותרת באמצע השבוע
+.center-header {
+  position: relative !important;
+  background-color: #e4b399b8 !important;
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  text-align: center !important;
+  border: none !important;
+}
+
+// תא ריק עבור יתר הימים
+.empty-header {
+  background-color: #e4b399b8 !important;
+  color: transparent !important;
+  border: none !important;
+}
+
+// פתרון חכם - צבע הגבולות זהה לרקע כך שהם לא נראים
+// אבל רק מיום ראשון ואילך, לא בעמודת השעות
+::ng-deep .cal-week-view .cal-time-events .cal-hour:nth-of-type(8) {
+  border-collapse: collapse !important;
+}
+
+
+::ng-deep .cal-week-view .cal-time-events .cal-hour:nth-of-type(8) .cal-hour-segment {
+  background-color: #e4b399b8 !important;
+  border: 1px solid #e4b399b8 !important; /* גבול באותו צבע כמו הרקע */
+  border-right: 1px solid #e4b399b8 !important;
+  border-left: 1px solid #e4b399b8 !important;
+  border-top: 1px solid #e4b399b8 !important;
+  border-bottom: 1px solid #e4b399b8 !important;
+}
+
+// עמודת השעות תישאר כרגיל (לא סגולה)
+::ng-deep .cal-week-view .cal-time-label-column .cal-hour:nth-of-type(8) {
+  background-color: inherit !important;
+  border: inherit !important;
+}
+
+::ng-deep .cal-week-view .cal-time-label-column .cal-hour:nth-of-type(8) .cal-hour-segment {
+  background-color: inherit !important;
+  border: inherit !important;
+}
+
+// צבע הגבולות זהה לרקע בכל האלמנטים בשורה 8 - רק באזור הימים
+::ng-deep .cal-week-view .cal-time-events .cal-hour:nth-of-type(8) * {
+  background-color: #e4b399b8 !important;
+  border-color: #e4b399b8 !important;
+  border: 1px solid #e4b399b8 !important;
+}
+
+// גבולות עמודות הימים בשורה 8 באותו צבע
+::ng-deep .cal-week-view .cal-day-columns .cal-day-column .cal-hour:nth-of-type(8),
+::ng-deep .cal-week-view .cal-day-columns .cal-day-column .cal-hour:nth-of-type(8) .cal-hour-segment {
+  border: 1px solid #e4b399b8 !important;
+  border-right: 1px solid #e4b399b8 !important;
+  border-left: 1px solid #e4b399b8 !important;
+  background-color: #e4b399b8 !important;
+}
+
+// גבולות הטבלה בשורה 8 - רק באזור הימים
+::ng-deep .cal-week-view .cal-time-events .cal-hour:nth-of-type(8) td,
+::ng-deep .cal-week-view .cal-time-events .cal-hour:nth-of-type(8) th {
+  border: 1px solid #e4b399b8 !important;
+  border-right: 1px solid #e4b399b8 !important;
+  border-left: 1px solid #e4b399b8 !important;
+  background-color: #e4b399b8 !important;
+}
+
+// עיצוב עמודת נושא יומי - גובה נמוך יותר לשעה 0
+::ng-deep .cal-hour-segment[style*="height: 35px"] {
+  height: 35px !important;
+  min-height: 35px !important;
+  max-height: 35px !important;
+}
+
+// עיצוב האינפוט של נושא יומי
+::ng-deep .cal-hour-segment[style*="height: 35px"] input {
+  height: 25px !important;
+  padding: 3px 8px !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+
+// עיצוב הטקסט בעמודת הזמן עבור נושא יומי
+::ng-deep .cal-time p {
+  font-weight: bold !important;
+  font-size: 13px !important;
+  color: #2c3e50 !important;
+  margin: 0 !important;
+  padding: 5px !important;
+  line-height: 1.2 !important;
+}
+
+// עיצוב ספציפי לכותרת "נושא יומי"
+::ng-deep .cal-time:has(p:contains("נושא יומי")) {
+  background-color: #f4e6f1 !important;
+  border-left: 2px solid #8e4585 !important;
+}
+
+// CSS סופר חזק - צריך לעבוד!!!
+::ng-deep * {
+  .cal-time-label-column {
+    background-color: #f4e6f1 !important;
+  }
+  
+  .cal-time-label-column * {
+    background-color: #f4e6f1 !important;
+  }
+  
+  .cal-time {
+    background-color: #f4e6f1 !important;
+  }
+  
+  .cal-time p {
+    color: #8e4585 !important;
+    font-weight: bold !important;
+  }
+}
+
+// גישה אחרת - CSS גלובלי
+mwl-calendar-week-view {
+  .cal-time-label-column {
+    background-color: #f4e6f1 !important;
+  }
+  
+  .cal-time-label-column * {
+    background-color: #f4e6f1 !important;
+  }
+  
+  .cal-time {
+    background-color: #f4e6f1 !important;
+  }
+  
+  .cal-time p {
+    color: #8e4585 !important;
+    font-weight: bold !important;
+  }
+}
+
+// CSS נוסף בלי ::ng-deep
+.cal-time-label-column {
+  background-color: #f4e6f1 !important;
+}
+
+.cal-time-label-column * {
+  background-color: #f4e6f1 !important;
+}
+
+.cal-time {
+  background-color: #f4e6f1 !important;
+}
+
+.cal-time p {
+  color: #8e4585 !important;
+  font-weight: bold !important;
+}
+
+
+// עיצוב כללי לעמודת השעות - חזק יותר
+::ng-deep .cal-time-label-column {
+  background-color: #f4e6f1 !important;
+}
+
+::ng-deep .cal-time-label-column .cal-hour {
+  background-color: #f4e6f1 !important;
+  border-right: 2px solid #d1a7cc !important;
+}
+
+::ng-deep .cal-time-label-column .cal-hour-segment {
+  background-color: #f4e6f1 !important;
+}
+
+// הסרת עיצובים מיותרים שגורמים לבעיות
+// ::ng-deep mwl-calendar-week-view .cal-time-label-column {
+//   background-color: #f3f4f6 !important;
+// }
+
+// ::ng-deep mwl-calendar-week-view .cal-time-label-column * {
+//   background-color: #f3f4f6 !important;
+// }
+
 ::ng-deep mat-icon {
   // justify-content: flex-end !important;
   color: gray !important;
@@ -154,9 +360,19 @@
 
 ::ng-deep ng-star-inserted{
 
-height: auto !important;
+height: 100% !important;
 
 }
+
+.important {
+  font-weight: 900 !important;
+  color: #8e4585 !important;
+  font-size: 16px !important;
+  text-align: center !important;
+  text-shadow: 1px 1px 2px rgba(20, 13, 13, 0.3) !important;
+
+}
+
 .cal-week-view .cal-time-events .cal-hour:nth-of-type(1),
 .cal-week-view .cal-time-events .cal-hour:nth-of-type(1) .cal-hour-segment,
 .cal-week-view .cal-time-label-column .cal-hour:nth-of-type(1) {
@@ -174,7 +390,6 @@ height: auto !important;
 .cal-week-view .cal-time-label-column .cal-hour:nth-of-type(3) {
   height: 50px !important;
 }
-
 .cal-week-view .cal-time-events .cal-hour:nth-of-type(4),
 .cal-week-view .cal-time-events .cal-hour:nth-of-type(4) .cal-hour-segment,
 .cal-week-view .cal-time-label-column .cal-hour:nth-of-type(4) {
@@ -233,6 +448,24 @@ height: auto !important;
 .cal-week-view .cal-time-events .cal-hour:nth-of-type(13),
 .cal-week-view .cal-time-events .cal-hour:nth-of-type(13) .cal-hour-segment,
 .cal-week-view .cal-time-label-column .cal-hour:nth-of-type(13) {
+  height: 50px !important;
+  
+}
+.cal-week-view .cal-time-events .cal-hour:nth-of-type(14),
+.cal-week-view .cal-time-events .cal-hour:nth-of-type(14) .cal-hour-segment,
+.cal-week-view .cal-time-label-column .cal-hour:nth-of-type(14) {
+  height: 50px !important;
+  
+}
+.cal-week-view .cal-time-events .cal-hour:nth-of-type(14),
+.cal-week-view .cal-time-events .cal-hour:nth-of-type(14) .cal-hour-segment,
+.cal-week-view .cal-time-label-column .cal-hour:nth-of-type(14) {
+  height: 50px !important;
+  
+}
+.cal-week-view .cal-time-events .cal-hour:nth-of-type(15),
+.cal-week-view .cal-time-events .cal-hour:nth-of-type(15) .cal-hour-segment,
+.cal-week-view .cal-time-label-column .cal-hour:nth-of-type(15) {
   height: 50px !important;
   
 }

@@ -58,7 +58,7 @@
   [weekStartsOn]="0"
   [hourSegments]="1"
   [dayStartHour]="0"
-  [dayEndHour]="12"
+  [dayEndHour]="14"
   [events]="events"
   [hourSegmentTemplate]="weekView"
   [currentTimeMarkerTemplate]="emptyTemplate"
@@ -80,17 +80,32 @@
   <div
     class="cal-hour-segment"
     [style.height.px]="segmentHeight"
-    [ngStyle]="{
-      'height.px':  this.hourHeights[segment.date.getHours()]
-    }"
+    [ngStyle]="
+      segment?.isHeaderRow
+        ? { 'height.px': 40 }
+        : { 'height.px': this.hourHeights[segment.date.getHours()] }
+    "
   >
-    <div *ngIf="!isTimeLabel" class="cal-hour-segment">
-      <!-- <div *ngIf="segment.date.getHours() === 0"> -->
-        <!-- <input type="text" /> -->
-        <!-- <textarea style="height: 30px; width: 100; border: none"  name="" id=""></textarea>
-      </div> -->
+    <!-- הצגת הכותרת רק ביום שלישי -->
+    <div *ngIf="segment?.isHeaderRow && segment.date.getDay() === 2" class="header-cell center-header">
+      {{ segment?.headerTitle }}
+    </div>
+    
+    <!-- תא ריק עבור יתר הימים בשורת הכותרת -->
+    <div *ngIf="segment?.isHeaderRow && segment.date.getDay() !== 2" class="header-cell empty-header">
+    </div>
+    
+    <div *ngIf="!segment?.isHeaderRow && !isTimeLabel" class="cal-hour-segment">
+      <div *ngIf="segment.date.getHours() === 0">
+        <input 
+          type="text"
+          placeholder="הכנס נושא יומי..."
+          [value]="getDailySubjectForDate(segment.date)"
+          (input)="onDailySubjectChange(segment.date, $any($event.target).value)"
+          style="width: 100%; border: none; outline: none; padding: 8px; background: transparent; text-align: center; font-weight: bold; font-size: 18px; color: #333;">
+      </div>
 
-      <div *ngIf="segment.date.getHours() === 2" class="example-button-row">
+  <!-- <div *ngIf="segment.date.getHours() === 2" class="example-button-row">
         <button
           mat-icon-button
           (click)="openDialog(segment, 'note_add')"
@@ -99,81 +114,191 @@
         >
           <mat-icon>note_add</mat-icon>
         </button>
+      </div> -->
+
+  <div *ngIf="segment.date.getHours() === 2">
+          
+        <input 
+          type="text"
+          [value]="getInspirationalpiecesForDate(segment.date)"
+          (input)="onInspirationalpiecesChange(segment.date, $any($event.target).value)"
+          style="width: 80%; border: none; outline: none; padding: 8px; background: transparent; text-align: center; font-weight: bold; font-size: 18px; color: #333;">
+
+           <button
+          mat-icon-button
+          (click)="openDialog(segment, 'note_add')"
+          aria-label="Example icon-button with a heart icon"
+          matTooltip="הוספת קובץ"
+        >
+          <mat-icon>attach_file</mat-icon>
+        </button>
+
+        </div>
+
+      <div *ngIf="segment.date.getHours() === 3" style="height: 100%; display: flex; align-items: stretch;">
+
+          <mat-select style="width: 100%; height: 100%"
+            placeholder="מצב כתיבה"
+            [(value)]="writingStatusByHour[segment.date.toDateString()]"
+            [ngStyle]="{'background-color': getSelectedColor(segment.date, 3)}"
+            (selectionChange)="onWritingStatusChange(segment.date, $event.value)">
+            <mat-option 
+              *ngFor="let option of writingStatusOptions" 
+              [value]="option.value"
+              [style.background-color]="option.color">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+
       </div>
 
-      <div *ngIf="segment.date.getHours() === 3">
-        <select name="" id="" style="width: 100%">
-          <option value="-1">מצב כתיבה</option>
-          <option value="0" style="background-color: green">כתוב</option>
-          <option value="1" style="background-color: red">לא כתוב</option>
-          <option value="2" style="background-color: orange">בכתיבה</option>
-        </select>
+  
+
+      <div *ngIf="segment.date.getHours() === 4" style="height: 100%; display: flex; align-items: stretch;">
+          <mat-select 
+            placeholder="מצב קריון"
+            [(value)]="narratorStatusByHour[segment.date.toDateString()]"
+                [ngStyle]="{'background-color': getSelectedColor(segment.date, 4)}"
+
+            (selectionChange)="onNarratorStatusChange(4, $event.value)">
+            <mat-option 
+              *ngFor="let option of narratorStatusOptions" 
+              [value]="option.value"
+              [style.background-color]="option.color">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
       </div>
 
-      <div *ngIf="segment.date.getHours() === 4">
-        <select name="" id="" style="width: 100%">
-          <option value="-1">מצב קריון</option>
-          <option value="0" style="background-color: green">מקוריין</option>
-          <option value="1" style="background-color: red">לא מקוריין</option>
-          <option value="2" style="background-color: perple">בהקלטות</option>
-        </select>
+      <div *ngIf="segment.date.getHours() === 5" style="height: 100%; display: flex; align-items: stretch;">
+          <mat-select 
+            placeholder="מצב אולפן"
+            [(value)]="studioStatusByHour[segment.date.toDateString()]"
+                [ngStyle]="{'background-color': getSelectedColor(segment.date, 5)}"
+
+            (selectionChange)="onStudioStatusChange(5, $event.value)">
+            <mat-option 
+              *ngFor="let option of studioStatusOptions" 
+              [value]="option.value"
+              [style.background-color]="option.color">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+      </div>
+      <div *ngIf="segment.date.getHours() === 6" style="height: 100%; display: flex; align-items: stretch;">
+          <mat-select 
+            placeholder="עורכת"
+            [(value)]="editorsByHour[segment.date.toDateString()]"
+                [ngStyle]="{'background-color': getSelectedColor(segment.date, 6)}"
+
+            (selectionChange)="onEditorChange(6, $event.value)">
+            <mat-option 
+              *ngFor="let option of editorsOptions" 
+              [value]="option.value"
+              [style.background-color]="option.color">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
       </div>
 
-      <div *ngIf="segment.date.getHours() === 5">
-        <select name="" id="" style="width: 100%">
-          <option value="-1">מצב אולפן</option>
-          <option value="0" style="background-color: green">ערוך</option>
-          <option value="1" style="background-color: red">לא ערוך</option>
-          <option value="2" style="background-color: orange">בעבודה</option>
-        </select>
-      </div>
-      <div *ngIf="segment.date.getHours() === 6">
-        <select name="" id="" style="width: 100%">
-          <option value="-1">עורכת</option>
-          <option value="0" style="background-color: green">תמר</option>
-          <option value="1" style="background-color: green">אילה</option>
-          <option value="2" style="background-color: green">חני</option>
-        </select>
+      <div *ngIf="segment.date.getHours() === 7" style="height: 100%; display: flex; align-items: stretch;">
+          <mat-select 
+            placeholder="מכינה תוכנית"
+            [(value)]="ProgramPreparerByHour[segment.date.toDateString()]"
+                [ngStyle]="{'background-color': getSelectedColor(segment.date, 7)}"
+
+            (selectionChange)="onProgramPreparerChange(7, $event.value)">
+            <mat-option 
+              *ngFor="let option of programPreparersOptions" 
+              [value]="option.value"
+              [style.background-color]="option.color">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
       </div>
 
-      <div *ngIf="segment.date.getHours() === 7">
-        <select name="" id="" style="width: 100%">
-          <option value="-1">מכינה תוכנית</option>
-          <option value="0" style="background-color: green">כבי</option>
-          <option value="1" style="background-color: green">רחלי</option>
-          <option value="2" style="background-color: green">יהודית</option>
-          <option value="2" style="background-color: green">שולמית שחור</option>
-        </select>
+       <div *ngIf="segment.date.getHours() === 9">
+        <input 
+          type="text"
+          [value]="getpanelstsForDate(segment.date)"
+          (input)="onpanelsChange(segment.date, $any($event.target).value)"
+          style="width: 80%; border: none; outline: none; padding: 8px; background: transparent; text-align: center; font-weight: bold; font-size: 18px; color: #333;">
+      <button
+          mat-icon-button
+          (click)="openDialog(segment, 'note_add')"
+          aria-label="Example icon-button with a heart icon"
+          matTooltip="הוספת קובץ"
+        >
+          <mat-icon>attach_file</mat-icon>
+        </button>
+        </div>
+
+
+      <div *ngIf="segment.date.getHours() === 10" style="height: 100%; display: flex; align-items: stretch;">
+          <mat-select 
+            placeholder="מצב הקלטה"
+            [(value)]="RecordingStatusByHour[segment.date.toDateString()]"
+                [ngStyle]="{'background-color': getSelectedColor(segment.date, 10)}"
+
+            (selectionChange)="onRecordingStatusChange(10, $event.value)">
+            <mat-option 
+              *ngFor="let option of recordingStatusOptions" 
+              [value]="option.value"
+              [style.background-color]="option.color">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
       </div>
 
-      <div *ngIf="segment.date.getHours() === 10">
-        <select name="" id="" style="width: 100%">
-          <option value="-1">מצב הקלטה</option>
-          <option value="0" style="background-color: green">הוקלט</option>
-          <option value="1" style="background-color: blue">
-            מאושר ולא הוקלט
-          </option>
-          <option value="2" style="background-color: red">לא סופי</option>
-        </select>
+      <div *ngIf="segment.date.getHours() === 11" style="height: 100%; display: flex; align-items: stretch;">
+          <mat-select 
+            placeholder="מצב אולפן"
+            [(value)]="studioStatusByHour[segment.date.toDateString()]"
+                [ngStyle]="{'background-color': getSelectedColor(segment.date, 5)}"
+
+            (selectionChange)="onStudioStatusChange(11, $event.value)">
+            <mat-option 
+              *ngFor="let option of studioStatusOptions" 
+              [value]="option.value"
+              [style.background-color]="option.color">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
       </div>
 
-      <div *ngIf="segment.date.getHours() === 11">
-        <select name="" id="" style="width: 100%">
-          <option value="-1">מצב אולפן</option>
-          <option value="0" style="background-color: green">ערוך</option>
-          <option value="1" style="background-color: red">עדיין לא ערוך</option>
-          <option value="2" style="background-color: orange">בעבודה</option>
-        </select>
+      
+      <div *ngIf="segment.date.getHours() === 12" style="height: 100%; display: flex; align-items: stretch;">
+          <mat-select 
+            placeholder="עורכת"
+            [(value)]="editorsByHour[segment.date.toDateString()]"
+                [ngStyle]="{'background-color': getSelectedColor(segment.date, 6)}"
+
+            (selectionChange)="onEditorChange(12, $event.value)">
+            <mat-option 
+              *ngFor="let option of editorsOptions" 
+              [value]="option.value"
+              [style.background-color]="option.color">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
       </div>
 
-      <div *ngIf="segment.date.getHours() === 12">
-        <select name="" id="" style="width: 100%">
-          <option value="-1">עורכת</option>
-          <option value="0" style="background-color: green">חני</option>
-          <option value="1" style="background-color: green">אילה</option>
-          <option value="2" style="background-color: green">תמר</option>
-        </select>
-      </div>
+       <div *ngIf="segment.date.getHours() === 14">
+        <input 
+          type="text"
+          [value]="getNotesForDate(segment.date)"
+          (input)="onNotesChange(segment.date, $any($event.target).value)"
+          style="width: 80%; border: none; outline: none; padding: 8px; background: transparent; text-align: center; font-weight: bold; font-size: 18px; color: #333;">
+     
+         <button
+          mat-icon-button
+          (click)="openDialog(segment, 'note_add')"
+          aria-label="Example icon-button with a heart icon"
+          matTooltip="הוספת קובץ"
+        >
+          <mat-icon>attach_file</mat-icon>
+        </button>
+        </div>
 
       <!-- <button mat-raised-button (click)="openDialog(segment)"  type="submit"> -->
       <!-- <span>
@@ -216,8 +341,10 @@
       </div> -->
     </div>
 
-    <div *ngIf="isTimeLabel" class="cal-time">
-      <p>{{ header[segment.date.getHours()] }}</p>
+    <div *ngIf="isTimeLabel && !segment?.isHeaderRow" class="cal-time" style="background-color: #f4e6f1 !important;">
+      <p class="important">{{ getHeaderForHour(segment.date.getHours()) }}</p>
     </div>
+
+    
   </div>
 </ng-template>

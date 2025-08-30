@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { DialogCalendarComponent } from './components/calendar/dialog-calendar/dialog-calendar.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
@@ -79,6 +80,7 @@ export const HEBREW_DATE_FORMATS = {
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    MatSelectModule,
     MatCheckboxModule,
     MatRadioModule,
     MatDatepickerModule,
