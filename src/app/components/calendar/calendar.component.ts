@@ -125,20 +125,21 @@ export class CalendarComponent implements OnInit {
 
   // מערך שמגדיר את הגובה לכל שעה
   hourHeights: HourHeights = {
-    0: 20,  // שעה 00:00 - נושא יומי (נמוך יותר)
-    1: 50,   // שעה 01:00
-    2: 50,   // שעה 02:00
+    0: 20, // שעה 00:00 - נושא יומי (נמוך יותר)
+    1: 50, // שעה 01:00
+    2: 100, // שעה 02:00 - גובה מוגדל
     3: 50,
     4: 50,
     5: 50,
     6: 50,
     7: 50,
     8: 50,
-    9: 50,
+    9: 100, // שעה 09:00 - גובה מוגדל
     10: 50,
     11: 50,
-    12: 50   // שעה 03:00
-  }
+    12: 50,
+    14: 100, // שעה 14:00 - גובה מוגדל
+  };
 
   constructor(
     private dialog: MatDialog,
@@ -303,27 +304,13 @@ export class CalendarComponent implements OnInit {
   ];
 
   beforeViewRender(event: CalendarWeekViewBeforeRenderEvent): void {
-      // event.hourColumns.forEach(hourColumn => {
-      //   hourColumn.hours.forEach(hour => {
-      //     const hourNumber = new Date(hour.segments[0].date).getHours();
-
-      //     // החלת הגובה המותאם לכל שעה
-      //     if (this.hourHeights[hourNumber]) {
-      //       hour.segments.forEach(segment => {
-      //         segment.cssClass = `custom-height-${hourNumber}`;
-      //       });
-      //     }
-      //   });
-      // });
-
-
     event.hourColumns.forEach((col) => {
       col.hours.forEach((hour) => {
         const header = this.headers.find(
-          h => h.hour === hour.segments[0].date.getHours()
+          (h) => h.hour === hour.segments[0].date.getHours()
         );
         if (header) {
-          hour.segments.forEach(segment => {
+          hour.segments.forEach((segment) => {
             (segment as any).isHeaderRow = true;
             (segment as any).headerTitle = header.title;
           });
@@ -332,6 +319,17 @@ export class CalendarComponent implements OnInit {
     });
   }
 
+  // פונקציה חדשה לקביעת גובה כל שורה
+  getSegmentHeight(segment: any): number {
+    const hour = segment.date.getHours();
+    if (segment.isHeaderRow) {
+      return 40; // גובה לשורת כותרת
+    }
+    if ([2, 9, 14].includes(hour)) {
+      return 100; // גובה מוגדל לשורות עם אייקון
+    }
+    return this.hourHeights[hour] || 50; // גובה רגיל לשאר השורות
+  }
 
   getHeight(date: Date): number {
     const hour = date.getHours();
@@ -348,22 +346,9 @@ export class CalendarComponent implements OnInit {
       data: { date: event.date },
     };
 
-    switch (dialogType) {
-      case 'note_add':
-        dialogComponent = DialogCalendarComponent;
-        break;
-      case 'description':
-        dialogComponent = DialogListSubjectComponent;
-        break;
-      case 'comments':
-        dialogComponent = CommentsComponent;
-        break;
-      default:
-        console.error('Unknown dialog type');
-        return;
-    }
+    
 
-    const dialogRef = this.dialog.open(dialogComponent as any, dialogConfig);
+    const dialogRef = this.dialog.open(DialogCalendarComponent as any, dialogConfig);
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`The ${dialogType} dialog was closed`);
@@ -371,12 +356,7 @@ export class CalendarComponent implements OnInit {
         case 'note_add':
           // טיפול בתוצאה של דיאלוג הלוח שנה
           break;
-        case 'description':
-          // טיפול בתוצאה של הדיאלוג האחר
-          break;
-        case 'comments':
-          // טיפול בתוצאה של הדיאלוג האחר
-          break;
+       
       }
     });
   }

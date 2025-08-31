@@ -79,12 +79,7 @@
 >
   <div
     class="cal-hour-segment"
-    [style.height.px]="segmentHeight"
-    [ngStyle]="
-      segment?.isHeaderRow
-        ? { 'height.px': 40 }
-        : { 'height.px': this.hourHeights[segment.date.getHours()] }
-    "
+    [style.height.px]="hourHeights[segment.date.getHours()] || 50"
   >
     <!-- הצגת הכותרת רק ביום שלישי -->
     <div *ngIf="segment?.isHeaderRow && segment.date.getDay() === 2" class="header-cell center-header">
@@ -202,7 +197,7 @@
       </div>
 
       <div *ngIf="segment.date.getHours() === 7" style="height: 100%; display: flex; align-items: stretch;">
-          <mat-select 
+        <mat-select 
             placeholder="מכינה תוכנית"
             [(value)]="ProgramPreparerByHour[segment.date.toDateString()]"
                 [ngStyle]="{'background-color': getSelectedColor(segment.date, 7)}"
@@ -216,6 +211,7 @@
             </mat-option>
           </mat-select>
       </div>
+   
 
        <div *ngIf="segment.date.getHours() === 9">
         <input 
@@ -348,3 +344,5 @@
     
   </div>
 </ng-template>
+
+
